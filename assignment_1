@@ -1,0 +1,82 @@
+C# day 1 : 
+Q1. Accept two number from user and do the sum of it
+Q2. Accept a float value and print square of that number
+Solve above code using Parse(), ToSingle() and TryPrase() method.
+Also observe exception if you do not enter valid data
+
+Q1.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Task1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string x = Console.ReadLine();
+            string y = Console.ReadLine();
+            int sum= int.Parse(x)+ int.Parse(y);
+            
+            Console.WriteLine(sum);
+            Console.ReadLine(); 
+        }
+    }
+}
+
+-------------------------------------------------------------
+Q2.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Task1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string x = Console.ReadLine();
+           
+            float sum= float.Parse(x)* float.Parse(x);
+           //float sum = Convert.ToSingle(x)+ Convert.ToSingle(x);
+ 
+            Console.WriteLine(sum);
+            Console.ReadLine(); 
+        }
+    }
+}
+
+using tryparse:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Task1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string x = Console.ReadLine();
+            float sum;
+            float.TryParse(x, out sum);
+            Console.WriteLine(sum);
+            Console.ReadLine(); 
+
+	/*string x = Console.ReadLine();
+	float sum;
+	float.TryParse(x, out sum);
+	sum += sum;
+	Console.WriteLine(sum);
+	Console.ReadLine(); */
+        }
+    }
+}

@@ -1,0 +1,167 @@
+Day3: 
+Q1)
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskD3
+{
+    internal class Program
+    {
+        class Student
+        {
+            string name;
+            public Student(string n)
+            {
+                name = n;
+            }
+            public int Total_marks()
+            { 
+                int m4;
+                int m5;
+                int m6;
+                Console.WriteLine("Enter marks out of 100");
+                string math = Console.ReadLine();
+                string science = Console.ReadLine();
+                string english = Console.ReadLine();
+                int.TryParse(math, out m4);
+                int.TryParse(science, out m5);
+                int.TryParse(english, out m6);
+                int m7 = m4 + m5 + m6;
+                return m7;
+            }
+            public void display()
+            {
+                int marks = 301;
+                Console.WriteLine(name);
+                int totalmarks = Total_marks();
+                if (totalmarks < 0)
+                {
+                    Console.WriteLine("less than 0 or negative not allowed");
+                    Console.ReadLine();
+                }
+               else if (totalmarks > marks)
+                {   
+                    Console.WriteLine("Enter correct marks");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine("your total marks out of 300 is {0} ", totalmarks);
+                    Console.ReadLine();
+                }
+            }
+        }
+            public static void Main(string[] args)
+        {
+            Student s1 = new Student("Sourav_Tile");
+            s1.display();
+        } 
+    }
+}
+-----------------------------------------------------------------------
+
+Q2)
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskD3
+{
+    internal class Program
+    {
+        class Student
+        {
+            string name;
+            int id=0;
+            double balance;
+            public Student(string n)
+            {
+                ++id;
+                name = n;
+            }
+            public void Deposit(int amt)
+            {
+                balance = balance + amt;
+            }
+            public void withdraw(int amt)
+            {
+                balance = balance - amt;
+            }
+            public void display()
+            {
+                Console.WriteLine(name);
+                Console.WriteLine(balance);
+            }
+        }
+            public static void Main(string[] args)
+        {
+            Student s1 = new Student("Sourav_Tile");
+            s1.Deposit(100000);
+            s1.withdraw(500);
+            s1.display();
+            Console.ReadLine();
+
+            Student s2 = new Student("Rutuja kotwal");
+            s2.Deposit(300);
+            s2.withdraw(150);
+            s2.display();
+            Console.ReadLine();
+        } 
+    }
+}
+
+---------------------------------------------------------------------------
+Q3)
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskD3
+{
+    internal class Program
+    {
+        class Student
+        {
+            string name;
+            int id=0;
+            double netsalary=10000;
+            public Student(string n)
+            {
+                ++id;
+                name = n;
+            }
+            public double calculatesal(int amt)
+            {
+                netsalary = netsalary - netsalary * 0.1;
+                return netsalary;
+            }
+            public void display()
+            {
+                Console.WriteLine(name);
+                Console.WriteLine(netsalary);
+            }
+        }
+            public static void Main(string[] args)
+        {
+            Student s1 = new Student("Sourav_Tile");
+            s1.calculatesal(100);
+            s1.display();
+
+            Student s2 = new Student("Rutuja kotwal");
+            s2.calculatesal(100);
+            s2.display();
+
+            Student s3 = new Student("rohit pagar");
+            s3.calculatesal(100);
+            s3.display();
+            Console.ReadLine();
+        } 
+    }
+}

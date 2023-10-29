@@ -17,6 +17,7 @@ namespace practice
         {
             string s1 = Console.ReadLine();
             //string s2 = Console.ReadLine();
+            // string s2 = s1.ToLower();
             string s2 = "h";
             Console.WriteLine(s1==s2);
             Console.WriteLine(Object.Equals(s1,s2));

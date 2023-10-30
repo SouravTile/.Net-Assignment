@@ -401,3 +401,75 @@ class Program
         e.Display();
     }
 }
+//-------------------------------------------------------------------------------
+/* using getters and setters write program for Employee
+*/
+
+namespace EmployeeDemo
+{
+    class Employee
+    {
+        private int id;
+        private string name;
+        private double salary;
+        private double Netsalary;
+        public int ID
+        {
+           get { return id; } 
+           set { id=value; }
+        }
+        public double SALARY
+        {
+            get { return salary; }
+            set {salary = value;
+                Calculatesal();
+                }
+        }
+        public string NAME
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public double paytax(double p)
+        {
+            Netsalary = salary - (salary * p);
+            return Netsalary;
+        }
+        public double Calculatesal()
+        {
+            Netsalary=paytax(0.1);
+            return Netsalary;
+        }
+        public void display()
+        {
+            Console.WriteLine("name of Employee {0} ID {1} and Net salary is {2} ", name, ID,Netsalary);
+        }
+    }
+    internal class Demo
+    {
+        public static void Main(string[] args)
+        {
+            Employee e1 = new Employee();
+            Employee e2 = new Employee();
+            Employee e3 = new Employee();
+            e1.ID = 100;
+            e2.ID = 200;
+            e3.ID = 300;
+
+            e1.NAME = "sourav";
+            e2.NAME = "rohit";
+            e3.NAME = "prasad";
+
+            e1.SALARY = 10000;
+            e2.SALARY = 100000;
+            e3.SALARY = 20000;
+
+            e1.display();
+            e2.display();
+            e3.display();
+            Console.ReadLine();
+        }
+    }
+}
+
+

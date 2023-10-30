@@ -241,6 +241,126 @@ namespace TaskD3
         } 
     }
 }
+//--------------------------------------------------------------------------------------------------
+/*Open previous example of Class Account
+As soon as you run your code it should print name of the bank
+*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Account
+{
+    internal class Program
+    {
+        static int getid = 0;
+        string name;
+        double current_balance = 0;
+        int pin;
+        static Program()
+        {
+            Console.WriteLine("EK KA Double Bank of India (E K D B I) ");
+        }
+
+        public Program(string n,int p) {
+            ++getid;
+            name = n;
+            pin = p;
+        }
+        public void Deposit(double d)
+        {
+            current_balance = d+(d*0.1);
+        }
+        public void Login()
+        {
+            Console.WriteLine("HELLO MR.{0}. ",name);
+            Console.WriteLine("Please Enter Your pin");
+            string x = Console.ReadLine();
+            int upin=int.Parse(x);
+            if (pin == upin)
+            {
+                Console.WriteLine("Welcome Mr.{0} to our Bank",name);
+            }
+            else
+            {
+                throw new Exception("incorrect pin");
+            }
+        }
+        public void Display()
+        {   
+            Console.WriteLine("displaying your balance");
+            Console.WriteLine(getid);    
+            Console.WriteLine(name);
+            Console.WriteLine(current_balance);
+        }
+        public void Withdraw(double d)
+        { 
+            current_balance -= d;
+            if (current_balance < 0)
+            throw new Exception("zero balance");
+            else
+            {
+                Console.WriteLine(current_balance);
+            }
+        }
+        public static void Main(string[] args)
+        {
+            Program p = new Program("Sourav Tile", 0007);
+            Program q = new Program("SpiderMan from NewYork", 1234);
+            try
+            {
+                p.Login();
+                p.Deposit(10000);
+                p.Display();
+                try
+                {
+                    p.Withdraw(1999);
+                    p.Display();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Insufficient balance !");
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Invalid pin. Enter a valid pin number");
+                Console.ReadLine();
+            }
+            Console.WriteLine();
+            try
+            {
+                q.Login();
+                q.Deposit(10000);
+                q.Display();
+                try
+                {
+                    q.Withdraw(1999);
+                    q.Display();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Insufficient balance !");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Invalid pin. Enter a valid pin number");
+                Console.ReadLine();
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
+
+
+
+
+
+
 
 
 

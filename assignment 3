@@ -355,3 +355,49 @@ namespace Account
         }
     }
 }
+
+//------------------------------------------------------------------------------
+/*
+3. Create class Employee having member Id, Name, Salary,  NetSalary, Dept d
+Create enum Dept {MKT, ADMIN, ADV}
+Create method public double paytax(double p) {return tax amount and set netsalary(note: netsalary=salary-salary*p%)}
+Create method display to display name and netsalary and department
+When you load application it should print name of company.
+  new Employee(1,”Raj”,50000,Dept.MKT)
+*/
+using System;
+public enum Dept { MKT, ADMIN, ADV }
+public class Employee
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Salary { get; set; }
+    public double NetSalary { get; set; }
+    public Dept Department { get; set; }
+
+    public Employee(int id, string name, double salary, Dept department)
+    {
+        Id = id;
+        Name = name;
+        Salary = salary;
+        Department = department;
+        NetSalary = Salary - PayTax(0.1); // Assuming 10% tax
+    }
+    public double PayTax(double p)
+    {
+        return Salary * p / 100;
+    }
+    public void Display()
+    {
+        Console.WriteLine($"Name: {Name}, Net Salary: {NetSalary}, Department: {Department}");
+    }
+}
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Welcome to XYZ Company!");
+        Employee e = new Employee(1, "Raj", 50000, Dept.MKT);
+        e.Display();
+    }
+}

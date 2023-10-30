@@ -115,7 +115,7 @@ namespace TaskD3
             s1.display();
             Console.ReadLine();
 
-            Student s2 = new Student("Rutuja kotwal");
+            Student s2 = new Student("Rohit pagar");
             s2.Deposit(300);
             s2.withdraw(150);
             s2.display();

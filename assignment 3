@@ -1,5 +1,8 @@
-Day3: 
-Q1)
+//Day3: 
+/*Q1)create a class student with member variable name, maths, science, eng
+Create a method which will return total marks[300]
+Create a method which will display name and total.
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,9 +64,15 @@ namespace TaskD3
         } 
     }
 }
------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
-Q2)
+/*Q2)
+create a class account having member name , id, balance
+Create a method -public void deposit(int amt){ balance=balance+amt}
+Create a method withdraw  -public void withdraw(int amt){ balance=balance-amt}
+Create display method which will display name and balance.
+Create 2 object and do transaction
+*/
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,53 +124,56 @@ namespace TaskD3
     }
 }
 
----------------------------------------------------------------------------
-Q3)
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskD3
+//---------------------------------------------------------------------------
+/*
+Create class Employee with private vatiable id name salary, netsalary
+Create method public double Calculatesal()
+Which will return net salary. Netsalary= salary-salary*10%
+Create method display which will display Name and net salary.
+Create 3 object of a class and call display method.
+*/
+namespace EmployeeDemo
 {
-    internal class Program
+    class Employee
     {
-        class Student
+        private int ID;
+        private string name;
+        private double salary = 80000;
+        private double Netsalary;
+
+        public Employee(string n)
         {
-            string name;
-            int id=0;
-            double netsalary=10000;
-            public Student(string n)
-            {
-                ++id;
-                name = n;
-            }
-            public double calculatesal(int amt)
-            {
-                netsalary = netsalary - netsalary * 0.1;
-                return netsalary;
-            }
-            public void display()
-            {
-                Console.WriteLine(name);
-                Console.WriteLine(netsalary);
-            }
+            ++ID;
+            name = n;
+            salary=Calculatesal();
         }
-            public static void Main(string[] args)
+        public double Calculatesal()
         {
-            Student s1 = new Student("Sourav_Tile");
-            s1.calculatesal(100);
-            s1.display();
-
-            Student s2 = new Student("Rutuja kotwal");
-            s2.calculatesal(100);
-            s2.display();
-
-            Student s3 = new Student("rohit pagar");
-            s3.calculatesal(100);
-            s3.display();
+            Netsalary = salary - (salary * 0.1);
+            return Netsalary;
+        }
+        public void display()
+        {
+            Console.WriteLine("name of Employee {0} and Net salary is {1}", name, salary);
+        }
+    }
+    internal class Demo
+    {
+        public static void Main(string[] args)
+        {
+            Employee e1 = new Employee("SOURAV");
+            Employee e2 = new Employee("ROHIT");
+            Employee e3 = new Employee("PRASAD");
+            e1.display();
+            e2.display();
+            e3.display();
             Console.ReadLine();
-        } 
+        }
+
+/*
+
+*/
+
+
     }
 }

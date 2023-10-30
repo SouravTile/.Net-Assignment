@@ -1,0 +1,52 @@
+/*
+Create class Employee with private vatiable id name salary, netsalary
+Create method public double Calculatesal()
+Which will return net salary. Netsalary= salary-salary*10%
+Create method display which will display Name and net salary.
+Create 3 object of a class and call display method.
+*/
+namespace EmployeeDemo
+{
+    class Employee
+    {
+        private int ID;
+        private string name;
+        private double salary = 80000;
+        private double Netsalary;
+
+        public Employee(string n)
+        {
+            ++ID;
+            name = n;
+            salary=Calculatesal();
+        }
+        public double Calculatesal()
+        {
+            Netsalary = salary - (salary * 0.1);
+            return Netsalary;
+        }
+        public void display()
+        {
+            Console.WriteLine("name of Employee {0} and Net salary is {1}", name, salary);
+        }
+    }
+    internal class Demo
+    {
+        public static void Main(string[] args)
+        {
+            Employee e1 = new Employee("SOURAV");
+            Employee e2 = new Employee("ROHIT");
+            Employee e3 = new Employee("PRASAD");
+            e1.display();
+            e2.display();
+            e3.display();
+            Console.ReadLine();
+        }
+
+/*
+
+*/
+
+
+    }
+}

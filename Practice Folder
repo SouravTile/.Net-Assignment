@@ -1,0 +1,22 @@
+//Delegate program
+namespace Delegate
+{
+    public delegate void DelegateHandler(int n1,int n2);  // declearing delegate 
+    internal class Program
+    {
+        public static void Add(int num1, int num2) // methods for delegate calling from main
+        {
+            Console.WriteLine(num1 + num2);
+        }
+        public static void Multi(int num1,int num2) // methods for delegate calling from main
+        {
+            Console.WriteLine(num1*num2);
+        }
+        static void Main(string[] args)
+        {
+            DelegateHandler del = Multi; // creating object of delegate and calling method directly
+            del += Add; //same here we do multicast and call add method
+            del(4,5); // passing parameter directly
+        }
+    }
+}

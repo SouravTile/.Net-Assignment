@@ -1,0 +1,338 @@
+using CA_Customer;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+
+internal class Program
+{
+    private static IConfiguration _iconfiguration;
+    static void Main(string[] args)
+    {
+        GetAppSettingsFile();
+        //PrintProduct();
+        EmpDisplay();
+    }
+    static void GetAppSettingsFile()
+    {
+        var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("CustomerData.json", optional: false, reloadOnChange: true);
+        _iconfiguration = builder.Build();
+    }
+    static void PrintProduct()
+    {
+        CustomerLayer obj = new CustomerLayer(_iconfiguration);
+        obj.Customer();
+
+
+    }
+    static void EmpDisplay()
+    {
+        Strongly_type indata = new Strongly_type(_iconfiguration);
+        /*Console.WriteLine("************************************");
+        Console.WriteLine("Enter id you want to delete record for");
+         int r = Convert.ToInt32(Console.ReadLine());
+         int no = indata.del(r);
+        Console.WriteLine("deleted {0}", no);*/
+        /*Console.WriteLine("************************************");
+        Customer customer = new Customer { Name = "Aditya",Address = "bjhgf",MobNo = "4567"};
+        int rec= indata.Insert(customer);
+        Console.WriteLine("Inserted Record {0}", rec);*/
+        Console.WriteLine("************************************");
+        Customer customer1 = indata.Search(4);
+        Console.WriteLine("Data Found \n {0} {1} {2} {3}",customer1.ID,customer1.Name,customer1.Address,customer1.MobNo);
+        Console.WriteLine("************************************");
+        List<Customer> ls1 = indata.SearchbyValue("Sourav");
+        if(ls1 != null)
+            {
+            foreach (var x in ls1)
+                Console.WriteLine("{0} {1} {2} {3}", x.ID, x.Name, x.Address,x.MobNo);
+        }
+            else {
+            Console.WriteLine("record with Sourav not found"); 
+        }
+        Console.WriteLine("************************************");
+        int rec4 = indata.Update(2, "Sourav");
+        Console.WriteLine("Update done {0} rows",rec4);
+        Console.WriteLine("************************************");
+        List<Customer> ls = indata.getList();
+        foreach (var x in ls)
+            Console.WriteLine("{0} {1} {2} {3}", x.ID, x.Name, x.Address,x.MobNo);
+        Console.ReadLine();
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CA_Customer
+{
+    internal class Strongly_type
+    {
+        private string _configuration;
+        public Strongly_type(IConfiguration configuration)
+        {
+            _configuration = configuration.GetConnectionString("Default");
+        }
+        public SqlConnection getconnection()
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = _configuration;
+            return conn;
+        }
+        public int del(int id)
+        {
+            int no = 0;
+            using (SqlConnection con = getconnection())
+                try
+                {
+                    {
+                        con.Open();
+                        SqlCommand cmd = new SqlCommand("SP_Delete_byid", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@pid", id);
+                        no = cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            return no;
+        }
+        public int Insert(Customer c)
+        {
+            using (SqlConnection sqlconn = getconnection())
+            {
+                int rec = 0;
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SP_InsertData",sqlconn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@pname", SqlDbType.NVarChar).Value = c.Name;
+                    cmd.Parameters.Add("@paddress", SqlDbType.NVarChar).Value = c.Address;
+                    cmd.Parameters.Add("@pMobNo", SqlDbType.NVarChar).Value = c.MobNo;
+                    sqlconn.Open();
+                    rec= cmd.ExecuteNonQuery();
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                return rec;
+
+            }
+        }
+        public Customer Search(int id)
+        {
+            Customer c = null;
+            try
+            {
+                SqlConnection con = getconnection();
+                con.Open();
+                SqlCommand cmd = new SqlCommand("Select * from Customer Where Id = @pid", con);
+                cmd.Parameters.AddWithValue("@pid", id);
+                SqlDataReader rdr = cmd.ExecuteReader();
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read()) 
+                    { 
+                        c = new Customer();
+                        c.ID = (int)rdr["Id"];
+                        c.Name = (string)rdr["Name"];
+                        c.Address = (string)rdr["Address"];
+                        c.MobNo = (string)rdr["MobNo"];
+                        break;
+                    }
+                }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return c;
+        }
+        public List<Customer> SearchbyValue(string value)
+        {
+            var list = new List<Customer>();
+            long f;
+            try
+            {
+                using (SqlConnection con = getconnection())
+                {
+                    SqlCommand cmd = null;
+                    con.Open();
+                    if (long.TryParse(value,out f))
+                    {
+                        cmd = new SqlCommand("Select * from Customer where MobNo = @pname", con);
+                        cmd.Parameters.Add("@pname",SqlDbType.NVarChar).Value = f;
+                    }
+                    else
+                    {
+                        cmd = new SqlCommand("Select * from Customer where Name = @pname", con);
+                        cmd.Parameters.Add("@pname",SqlDbType.NVarChar).Value=value;
+                    }
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if(rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            Customer c = new Customer();
+                            c.ID = Convert.ToInt32(rdr["Id"]);
+                            c.Name = (string)rdr["Name"];
+                            c.Address = (string)rdr["Address"];
+                            c.MobNo = (string)rdr["MobNo"];
+                            list.Add(c);
+                        }
+                    }
+                   
+                }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return list;
+        }
+        public int Update(int id,String Name)
+        {
+            int rec = 0;
+            try
+            {
+                using (SqlConnection con = getconnection())
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("Update Customer set Name = @pname where Id= @pid", con);
+                    cmd.Parameters.Add("@pname", SqlDbType.NVarChar).Value = Name;
+                    cmd.Parameters.Add("@pid", SqlDbType.Int).Value = id;
+                    rec = cmd.ExecuteNonQuery();
+                }
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return rec;
+
+        }
+
+        public List<Customer> getList()
+        {
+            var list = new List<Customer>();
+            try
+            {
+                using(SqlConnection con = getconnection())
+                {
+                    SqlCommand cmd = new SqlCommand("SP_GetCustomerData",con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            Customer c = new Customer();
+                            c.ID = (int)rdr["Id"];
+                            c.Name = (string)rdr["Name"];
+                            c.Address = (string)rdr["Address"];
+                            c.MobNo = (string)rdr["MobNo"];
+                            list.Add(c);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            return list;
+          
+        }
+    }
+}
+//-------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CA_Customer
+{
+    internal class Customer
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string MobNo { get; set; }
+    }
+}
+//--------------------------------------------------------------------------------------------
+
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CA_Customer
+{
+    public class CustomerLayer
+    {
+        private string _connectionString;
+        public CustomerLayer(IConfiguration iconfiguration)
+        {
+            _connectionString = iconfiguration.GetConnectionString("Default");
+        }
+        public void Customer()
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                try
+                {                   
+                    SqlCommand cmd = new SqlCommand("insert into Customer values ('rutu', 'adf', 95036)",con);
+                    con.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    Console.WriteLine("Inserted Rows = " + rowsAffected);
+
+                    cmd.CommandText = "update Customer set Name= 'Aaku' where Id = 2";
+                  
+                    rowsAffected = cmd.ExecuteNonQuery();
+                    Console.WriteLine("Updated Rows = " + rowsAffected);
+
+                    cmd.CommandText = "Delete from Customer where Id in (10)";
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                    Console.WriteLine("Deleted Rows = " + rowsAffected);
+                    cmd.CommandText = "Select * from Customer";
+                    Console.WriteLine("**********Connected*************");
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.HasRows)
+                    {
+                        while (rdr.Read())
+                        {
+                            Console.WriteLine("{0} {1} {2} {3}", rdr["Id"], rdr["Name"], rdr["Address"], rdr["MobNo"]);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle Exceptions, if any
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+        }
+    }
+}
+

@@ -1,0 +1,139 @@
+//MarvelCinematicUniverse(MCU)
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Marvels_In_memory_CRUD
+{
+    internal class Marvel
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public string Power {  get; set; } 
+        public Movies Movie { get; set; }
+        
+    };
+        public enum Movies { IronMan1, Thor, SpiderMan1, Avengers}
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Marvels_In_memory_CRUD
+{
+    internal interface InterfaceMarvel
+    {
+        Marvel GetCharacter(int Id);
+        IEnumerable<Marvel> GetAllMarvels();
+        Marvel Add(Marvel marvel);
+        Marvel Delete(int Id);
+        Marvel Replace(Marvel marvel);
+
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+
+namespace Marvels_In_memory_CRUD
+{
+    internal class MockMarvelRepository : InterfaceMarvel
+    {
+        private static List<Marvel> _MyAvengersList;
+
+        public MockMarvelRepository() 
+        {
+            _MyAvengersList = new List<Marvel>
+            {
+                new Marvel() {Id = 1, Name ="Tony", Power="Genious, playboy, millionaire", Movie=Movies.IronMan1},
+                new Marvel() {Id = 2, Name ="Thor", Power="God_of_Thunder", Movie=Movies.Thor},
+                new Marvel() {Id = 3, Name ="Peter", Power="spiderSense", Movie=Movies.SpiderMan1},
+                new Marvel() {Id = 4, Name ="Wanda", Power="Witch", Movie=Movies.Avengers},
+            };
+        }
+        public Marvel Add(Marvel marvel)
+        {
+            marvel.Id=_MyAvengersList.Max(m => m.Id) + 1;
+            _MyAvengersList.Add(marvel);
+            return marvel;
+        }
+        public Marvel Delete(int Id)
+        {
+            Marvel marvel= _MyAvengersList.FirstOrDefault(m =>Id == m.Id);
+            if(marvel != null)
+             _MyAvengersList.Remove(marvel);
+            return marvel; 
+        }
+        public Marvel Replace(Marvel marvel)
+        {
+            Marvel mar = _MyAvengersList.FirstOrDefault(m => m.Id == marvel.Id);
+            if (mar != null)
+            {
+                mar.Id = marvel.Id;
+                mar.Name = marvel.Name;
+                mar.Power = marvel.Power;
+                mar.Movie = marvel.Movie;
+            }   
+            return mar;
+        }
+        public IEnumerable <Marvel> GetAllMarvels()
+        {
+            return _MyAvengersList ;
+        }
+        public Marvel GetCharacter(int Id)
+        {
+            return _MyAvengersList.FirstOrDefault(m => m.Id == Id);
+        }
+
+    }
+}
+
+using System.Data;
+
+namespace Marvels_In_memory_CRUD
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            MockMarvelRepository mock = new MockMarvelRepository();
+            Display(mock);
+            
+            Marvel m = mock.Add(new Marvel{Name="Bruce", Movie=Movies.Avengers, Power="HulkBuster"});
+            Console.WriteLine("Record Added: {0} {1} {2} {3}", m.Id,m.Name,m.Power,m.Movie);
+            Display(mock);
+            
+            Marvel m1 = mock.Delete(3);
+            Display(mock);
+            
+            Marvel marvel = new Marvel { Id = 4, Name = "Natasha_Romanoff", Movie = Movies.Avengers };
+            UpdateData(marvel,mock);
+            
+        }
+        public static void Display(MockMarvelRepository mock)
+        {
+            foreach (Marvel marvel in mock.GetAllMarvels()) 
+            { 
+                Console.WriteLine("Top {0}= Name Character {1} and their powers {2} with their respective movie {3} ",marvel.Id,marvel.Name,marvel.Power,marvel.Movie);
+            }
+            Console.WriteLine();
+        }
+
+        static void UpdateData(Marvel e, MockMarvelRepository db)
+        {
+            db.Replace(e);
+            Display(db);
+        }
+    }
+}

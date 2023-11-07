@@ -1,0 +1,146 @@
+1)Take two numbers from user and do sum of it
+using System
+namespace Assignment2
+{
+	class Demo
+	{
+		public static void Main()
+		{
+			int num1 = int.Parse(Console.WriteLine());
+			int num2 = int.Parse(Console.WriteLine());
+			Console.WriteLine("Addition of Two numbers {0} and {1} is {2}",num1,num2,num1+num2)
+		}
+	}
+}
+
+2)Accept a Float value and print square of it
+solve above code using Parse,ToSingle,TryParse() and observe exception if you do not enter valid data 
+using System;
+namespace Assignment2
+{
+	class Demo
+	{
+		public static float square(float num)
+		{
+			return num*num;
+		}
+		public static void Main()
+		{
+			float o;
+			Console.WriteLine("Enter the number ");
+			float value = float.Parse(Console.ReadLine());
+			Console.WriteLine(square(value));
+
+			Console.WriteLine("Enter the number ");
+			float value1 = Convert.ToSingle(Console.ReadLine());
+			Console.WriteLine(square(value));
+
+			Console.WriteLine("Enter the number ");
+			bool b = float.TryParse(Console.ReadLine(),out o);
+			if(b==true)
+			{
+				 Console.WriteLine(square(o));
+			}
+		}
+	}
+}
+		
+3) create a class calculator and create 3 instance method square, cube, round[input 22.5 then o/p 22]
+which will return square cube and rounded number.create object and call method and print the result
+using System;
+namespace Assignment2
+{
+    class Calculator
+    {
+        public int square(int num)
+        {
+            return num * num;
+        }
+        public int cube(int num)
+        {
+            return num * num * num;
+        }
+        public int round(float num)
+        {
+            return (int) num;
+        }
+    }
+
+    class Demo
+    {
+        public static void Main()
+        {
+            Calculator calculator = new Calculator();
+            Console.WriteLine(calculator.square(int.Parse(Console.ReadLine())));
+            Console.WriteLine(calculator.round(float.Parse(Console.ReadLine())));
+            Console.WriteLine(calculator.cube(int.Parse(Console.ReadLine())));
+
+            Console.WriteLine(calculator.square(Convert.ToInt32(Console.ReadLine())));
+            Console.WriteLine(calculator.round(Convert.ToSingle(Console.ReadLine())));
+            Console.WriteLine(calculator.cube(Convert.ToInt32(Console.ReadLine())));
+
+            int a;
+            float b;
+            int c;
+            if (int.TryParse(Console.ReadLine(), out a) == true)
+                Console.WriteLine(calculator.square(a));
+            if (float.TryParse(Console.ReadLine(), out b) == true)
+                Console.WriteLine(calculator.round(b));
+            if (int.TryParse(Console.ReadLine(), out c) == true)
+                Console.WriteLine(calculator.cube(c));
+        }
+    }
+
+}
+
+4)Create class Student with private member variable prn_no,java,c#,Html,Total,Percentage
+Write method public void get_total()
+Write method public void get_Percentage()
+Write method public string display()-> which will display prn_o , total, percentage
+create two objects of class and display record
+sol-
+using System;
+namespace Assignment2
+{
+    public class Student
+    {
+        int prn_no;
+        int java;
+        int Csharp;
+        int Html;
+        double total;
+        double percentage;
+
+        public Student(int prn_no, int java, int Csharp, int Html)
+        {
+            this.prn_no = prn_no;
+            this.java = java;
+            this.Csharp = Csharp;
+            this.Html = Html;
+        }
+        public void get_total()
+        {
+            total = java + Csharp + Html;
+        }
+        public void get_percentage()
+        {
+            percentage = (total / 300) * 100;
+        }
+        public string display()
+        {
+            get_total();
+            get_percentage();
+            return string.Format("PRN_No = {0} Total = {1} Percentage = {2}", prn_no, total, percentage);
+        }
+    }
+    public class Demo
+    {
+        public static void Main()
+        {
+            Student student1 = new Student(60, 85, 97, 26);
+            Student student2 = new Student(50, 90, 56, 34);
+            Console.WriteLine("Info about Student1 is " + student1.display());
+            Console.WriteLine("Info about  Student2 is " + student2.display());
+        }
+    }
+}

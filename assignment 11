@@ -1,0 +1,179 @@
+//1) create a table employee with a column ID,Name,Salary  enter the record using sql connection class connect to the database and display records
+//sol:
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Data.SqlClient;
+namespace ADO01_ConsoleApplication
+{
+    public class Class1
+    {
+        private string _connectionString;
+        public Class1(IConfiguration iconfiguration)
+        {
+            _connectionString = iconfiguration.GetConnectionString("Default");
+        }
+
+        public void Products()
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                // Pass the connection to the command object, so the command object knows on which
+                // connection to execute the command
+                SqlCommand cmd = new SqlCommand("Select * from Nora", con);
+                // Open the connection. Otherwise you get a runtime error. An open connection is
+                // required to execute the command            
+                con.Open();
+                Console.WriteLine("connected");
+                SqlDataReader rdr = cmd.ExecuteReader(); //returns object of sqldatareder
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        Console.WriteLine("{0} {1} {2}", rdr["Id"], rdr["Name"], rdr["Salary"]);
+                    }
+                }
+            }
+
+        }
+    }
+}
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Data.SqlClient;
+namespace ADO01_ConsoleApplication
+{
+    public class Class1
+    {
+        private string _connectionString;
+        public Class1(IConfiguration iconfiguration)
+        {
+            _connectionString = iconfiguration.GetConnectionString("Default");
+        }
+
+        public void Products()
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                // Pass the connection to the command object, so the command object knows on which
+                // connection to execute the command
+                SqlCommand cmd = new SqlCommand("Select * from Nora", con);
+                // Open the connection. Otherwise you get a runtime error. An open connection is
+                // required to execute the command            
+                con.Open();
+                Console.WriteLine("connected");
+                SqlDataReader rdr = cmd.ExecuteReader(); //returns object of sqldatareder
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        Console.WriteLine("{0} {1} {2}", rdr["Id"], rdr["Name"], rdr["Salary"]);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+/*
+2) creat a table coustmer with column
+Id,name,Address,mobile
+
+1)display all records
+2)insert new cousttemer
+3)update coustemer name where id =1
+4)Dlete record where id=3
+*/
+
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Data.SqlClient;
+
+namespace ConsoleApp6
+{
+    public class Employee
+    {
+        private string _connectionString;
+        public Employee(IConfiguration iconfriguation) {
+            _connectionString = iconfriguation.GetConnectionString("Default");
+        
+        }
+        public void Employeedetail()
+        {
+            using(SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("Select * from Employee",conn);
+                conn.Open();
+                Console.WriteLine("Connected");
+                SqlDataReader reader = cmd.ExecuteReader();
+                if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        Console.WriteLine("{0} {1} {2} {3}", reader["Id"], reader["Name"], reader["Address"], reader["Mobile"]);
+                    }
+                }
+            }
+        }
+        public void insert()
+        {
+            using(SqlConnection con = new SqlConnection(_connectionString))
+            {
+                SqlCommand insert = new SqlCommand("Insert into Employee values('Mridul','Patna','9867345611')",con);
+            con.Open();
+                SqlDataReader reader = insert.ExecuteReader();
+            }
+        }
+    public void Update()
+        {
+            using(SqlConnection con1 = new SqlConnection(_connectionString))
+            {
+                SqlCommand update = new SqlCommand("update Employee set Name='Ishwak' where id='3'", con1);
+                con1.Open();
+                SqlDataReader reader = update.ExecuteReader();
+            }
+        }
+        public void delete()
+        {
+            using(SqlConnection con2 = new SqlConnection(_connectionString))
+            {
+                SqlCommand delete = new SqlCommand("Delete from Employee where Name='Kunal'",con2);
+                con2.Open();
+                SqlDataReader reader = delete.ExecuteReader();
+            }
+        }
+    
+    
+    }
+
+}
+
+using Microsoft.Extensions.Configuration;
+using System;
+namespace ConsoleApp6
+{
+    class Program
+    {
+        private static IConfiguration _iconfriguation;
+        static void GetAppSettingsFile()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("jsconfig1.json", optional: true);
+                _iconfriguation = builder.Build(); ;
+                }
+        static void PrintEmployee()
+        {
+            Employee obj = new Employee(_iconfriguation);
+            obj.Employeedetail();
+            obj.insert();
+            obj.delete();
+            obj.Update();
+        }
+        static void Main(string[] args)
+        {
+            GetAppSettingsFile();
+            PrintEmployee();
+        }
+    }
+}

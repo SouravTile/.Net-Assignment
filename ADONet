@@ -64,7 +64,7 @@ namespace ADONet
     }
 }
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 {
   "ConnectionStrings": {
     "Default": "Data Source=(localdb)\\ProjectModels;Initial Catalog=Demo_Product;Integrated Security=True;"

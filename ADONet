@@ -1,4 +1,4 @@
-// product list with price and quantity
+//product list with price and quantity
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

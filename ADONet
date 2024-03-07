@@ -37,6 +37,7 @@ namespace ADONet
         }
     }
 }
+
 //--------------------------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 namespace ADONet

@@ -10,7 +10,6 @@ namespace ADONet
 {
     internal class Productlayer
     {
-
         private string _connectionString;
         public Productlayer(IConfiguration iconfiguration)
         {
